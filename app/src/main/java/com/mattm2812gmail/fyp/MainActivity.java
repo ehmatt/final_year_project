@@ -15,7 +15,6 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity {
     Button login;
     EditText username, password;
-//    TextView t1;
     int count = 3;
 
     @Override
@@ -30,13 +29,11 @@ public class MainActivity extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                if (username.getText().toString().equals("matt") && password.getText().toString().equals("password")){
+                if (username.getText().toString().equals("Matt") && password.getText().toString().equals("pass")){
                     startActivity(new Intent(MainActivity.this, HomeActivity.class));
 
                 } else {
                     Toast.makeText(getApplicationContext(), "Wrong username/password", Toast.LENGTH_SHORT).show();
-//                    t1.setVisibility(View.VISIBLE);
-//                    t1.setBackgroundColor(Color.RED);
 
                     //only 3 login attempts
                     count--;
