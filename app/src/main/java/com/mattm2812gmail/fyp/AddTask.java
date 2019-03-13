@@ -1,14 +1,31 @@
 package com.mattm2812gmail.fyp;
 
+import android.R.layout;
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ListView;
+
+import org.apache.commons.io.FileUtils;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+
+import static android.R.layout.simple_list_item_1;
 
 public class AddTask extends android.support.design.widget.BottomSheetDialogFragment {
+
     public static AddTask newInstance() {
         return new AddTask();
     }
@@ -19,22 +36,27 @@ public class AddTask extends android.support.design.widget.BottomSheetDialogFrag
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.add_task_dialog, container,
+        View v = inflater.inflate(R.layout.add_task_dialog, container,
                 false);
 
-        // get the views and attach the listener
+        final EditText etNewItem = (EditText) v.findViewById(R.id.etNewItem);
 
-        return view;
+        Button btn1 = (Button)v.findViewById(R.id.btn1);
+        btn1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String input = etNewItem.getText().toString();
+
+                if(!input.equals("")){
+                    ((HomeActivity)getActivity()).itemsAdapter.add(input);
+                    etNewItem.setText("");
+                    ((HomeActivity)getActivity()).writeItems();
+                }
+            }
+        });
+
+        return v;
 
     }
-
-//    DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-//        @Override
-//        public void onClick(DialogInterface dialog, int which) {
-//
-//
-//
-//        }
-//    };
 
 }

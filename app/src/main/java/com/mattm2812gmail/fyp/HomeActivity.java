@@ -6,10 +6,12 @@ import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.content.Intent;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
@@ -21,6 +23,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -35,9 +38,11 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 public class HomeActivity extends AppCompatActivity {
-    private ArrayList<String> items;
-    private ArrayAdapter<String> itemsAdapter;
-    private ListView lvItems;
+    public ArrayList<String> items;
+    public ArrayAdapter<String> itemsAdapter;
+    public ListView lvItems;
+
+    public String input_1;
 
     Button btnDatePicker, btnTimePicker;
     EditText txtDate, txtTime;
@@ -48,6 +53,9 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_activity);
 
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        setSupportActionBar(myToolbar);
+
         lvItems = (ListView) findViewById(R.id.list_todo);
         items = new ArrayList<String>();
         readItems();
@@ -56,8 +64,8 @@ public class HomeActivity extends AppCompatActivity {
         lvItems.setAdapter(itemsAdapter);
         setupListViewListener();
 
-        btnDatePicker=(Button)findViewById(R.id.btn_date);
-        txtDate=(EditText)findViewById(R.id.in_date);
+//        btnDatePicker = (Button)findViewById(R.id.btn_date);
+//        txtDate = (EditText)findViewById(R.id.in_date);
 
 //        btnDatePicker.setOnClickListener((View.OnClickListener) this);
 
@@ -65,16 +73,21 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.toolbar_action:
+                // User chose the "Settings" item, show the app settings UI...
+                startActivity(new Intent(HomeActivity.this, SettingsActivity.class));
+                return true;
 
-    public boolean onCreateOptionsMenu(Menu menu) {
+            default:
+                // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item);
 
-        MenuInflater inflater = getMenuInflater();
-
-        inflater.inflate(R.menu.add_task, menu);
-
-        return true;
-
+        }
     }
+
 
     private void setupListViewListener() {
         lvItems.setOnItemLongClickListener(
@@ -101,27 +114,7 @@ public class HomeActivity extends AppCompatActivity {
         addPhotoBottomDialogFragment.show(getSupportFragmentManager(),
                 "add_photo_dialog_fragment");
 
-//        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//
-//
-//
-//            }
-//        };
-
-
-
-
     }
-
-//    public void saveTask(View view){
-//    EditText etNewItem = (EditText) findViewById(R.id.etNewItem);
-//        String itemText = etNewItem.getText().toString();
-//        itemsAdapter.add(itemText);
-//        etNewItem.setText("");
-//
-//    }
 
     private void readItems() {
         File filesDir = getFilesDir();
@@ -133,7 +126,7 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
-    private void writeItems() {
+    public void writeItems() {
         File filesDir = getFilesDir();
         File todoFile = new File(filesDir, "todo.txt");
         try {
