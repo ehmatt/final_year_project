@@ -39,14 +39,9 @@ import java.util.Calendar;
 
 public class HomeActivity extends AppCompatActivity {
     public ArrayList<String> items;
+    public ArrayList<Task> tasks;
     public ArrayAdapter<String> itemsAdapter;
     public ListView lvItems;
-
-    public String input_1;
-
-    Button btnDatePicker, btnTimePicker;
-    EditText txtDate, txtTime;
-    private int mYear, mMonth, mDay, mHour, mMinute;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,20 +52,29 @@ public class HomeActivity extends AppCompatActivity {
         setSupportActionBar(myToolbar);
 
         lvItems = (ListView) findViewById(R.id.list_todo);
-        items = new ArrayList<String>();
+//        items = new ArrayList<String>();
+//        readItems();
+//        itemsAdapter = new ArrayAdapter<String>(this,
+//                android.R.layout.simple_list_item_1, items);
+//        lvItems.setAdapter(itemsAdapter);
+
+
+        tasks = new ArrayList<Task>();
         readItems();
-        itemsAdapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, items);
-        lvItems.setAdapter(itemsAdapter);
+        TaskListAdapter taskListAdapter = new TaskListAdapter(this, R.layout.task_view_layout, tasks);
+        lvItems.setAdapter(taskListAdapter);
         setupListViewListener();
+    }
 
-//        btnDatePicker = (Button)findViewById(R.id.btn_date);
-//        txtDate = (EditText)findViewById(R.id.in_date);
-
-//        btnDatePicker.setOnClickListener((View.OnClickListener) this);
-
+    public void addTask(View view){
+        // open menu then add task
+        AddTask addPhotoBottomDialogFragment =
+                AddTask.newInstance().newInstance();
+        addPhotoBottomDialogFragment.show(getSupportFragmentManager(),
+                "add_photo_dialog_fragment");
 
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -96,24 +100,15 @@ public class HomeActivity extends AppCompatActivity {
                     public boolean onItemLongClick(AdapterView<?> adapter,
                                                    View item, int pos, long id) {
                         // Remove the item within array at position
-                        items.remove(pos);
+                        tasks.remove(pos);
                         // Refresh the adapter
-                        itemsAdapter.notifyDataSetChanged();
+//                        taskListAdapter.notifyDataSetChanged();
                         writeItems();
                         // Return true consumes the long click event (marks it handled)
                         return true;
                     }
 
                 });
-    }
-
-    public void addTask(View view){
-        // open menu then add task
-        AddTask addPhotoBottomDialogFragment =
-                AddTask.newInstance().newInstance();
-        addPhotoBottomDialogFragment.show(getSupportFragmentManager(),
-                "add_photo_dialog_fragment");
-
     }
 
     private void readItems() {
@@ -135,33 +130,4 @@ public class HomeActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-
-
-//    DATE STUFF
-//    public void onClick(View v) {
-//
-//        if (v == btnDatePicker) {
-//
-//            // Get Current Date
-//            final Calendar c = Calendar.getInstance();
-//            mYear = c.get(Calendar.YEAR);
-//            mMonth = c.get(Calendar.MONTH);
-//            mDay = c.get(Calendar.DAY_OF_MONTH);
-//
-//
-//            DatePickerDialog datePickerDialog = new DatePickerDialog(this,
-//                    new DatePickerDialog.OnDateSetListener() {
-//
-//                        @Override
-//                        public void onDateSet(DatePicker view, int year,
-//                                              int monthOfYear, int dayOfMonth) {
-//
-//                            txtDate.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
-//
-//                        }
-//                    }, mYear, mMonth, mDay);
-//            datePickerDialog.show();
-//        }
-//    }
-
 }
