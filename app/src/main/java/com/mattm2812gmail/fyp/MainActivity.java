@@ -14,7 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
-    Button login;
+    Button login, signup;
     EditText username, password;
     int count = 3;
 
@@ -23,12 +23,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
 
-        login = (Button)findViewById(R.id.button);
-        username = (EditText)findViewById(R.id.editText1);
-        password = (EditText)findViewById(R.id.editText2);
+        login = findViewById(R.id.login);
+        signup = findViewById(R.id.signup);
+        username = findViewById(R.id.editText1);
+        password = findViewById(R.id.editText2);
 
         login.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -45,6 +46,13 @@ public class MainActivity extends AppCompatActivity {
                         login.setEnabled(false);
                     }
                 }
+            }
+        });
+
+        signup.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                startActivity(new Intent(MainActivity.this, SignUpActivity.class));
             }
         });
     }

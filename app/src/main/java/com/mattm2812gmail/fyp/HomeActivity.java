@@ -6,7 +6,9 @@ import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.BottomSheetDialog;
+import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -68,10 +70,14 @@ public class HomeActivity extends AppCompatActivity {
 
     public void addTask(View view){
         // open menu then add task
-        AddTask addPhotoBottomDialogFragment =
-                AddTask.newInstance().newInstance();
-        addPhotoBottomDialogFragment.show(getSupportFragmentManager(),
-                "add_photo_dialog_fragment");
+        AddTask addTaskBottomDialogFragment = AddTask.newInstance();
+//        addTaskBottomDialogFragment.setStyle(R.style.BottomSheetDialog, BottomSheetDialogFragment.STYLE_NORMAL);
+        addTaskBottomDialogFragment.show(getSupportFragmentManager(),
+                "add_task_dialog_fragment");
+//
+//        BottomSheetDialog dialog = new BottomSheetDialog(this, R.style.BottomSheetDialog);
+//        dialog.setContentView(R.layout.add_task_dialog);
+//        dialog.show();
 
     }
 

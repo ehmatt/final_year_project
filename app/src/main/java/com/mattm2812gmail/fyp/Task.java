@@ -4,8 +4,7 @@ import java.util.Date;
 
 public class Task {
 
-    private String task;
-    private String subtask;
+    private String task, subtask;
     private String date;
 
     public Task(String task, String subtask, String date) {

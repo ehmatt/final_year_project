@@ -3,32 +3,51 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="12mm">
+    android:orientation="vertical"
+    android:layout_height="100dp">
 
-    <EditText
-        android:id="@+id/etNewItem"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter a new item" />
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/etNewItem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Enter a new task" />
+
+        <Button
+            android:id="@+id/btn_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add Date" />
+
+        <TextView
+            android:id="@+id/tvDisplayDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
 
 
-    <Button
-        android:id="@+id/btn_confirm"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Confirm" />
+        android:orientation="horizontal">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/tvDisplayDate"/>
+        <EditText
+            android:id="@+id/subtask"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Enter a new subtask" />
 
-    <!--android:text="Date"-->
+        <Button
+            android:id="@+id/btn_confirm"
+            android:layout_width="119dp"
+            android:layout_height="wrap_content"
+            android:text="Confirm" />
 
-    <Button
-        android:id="@+id/btn_date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="addDate"
-        android:text="Add Date" />
+    </LinearLayout>
+
 </LinearLayout>

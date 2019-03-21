@@ -8,6 +8,7 @@ import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,7 +43,6 @@ public class AddTask extends android.support.design.widget.BottomSheetDialogFrag
     public TextView tvDisplayDate;
     public String selectedDate;
     public static final int REQUEST_CODE = 11;
-    private int mYear, mMonth, mDay, mHour, mMinute;
 
     @Nullable
     @Override
@@ -52,6 +52,10 @@ public class AddTask extends android.support.design.widget.BottomSheetDialogFrag
 
         View v = inflater.inflate(R.layout.add_task_dialog, container,
                 false);
+
+//        setStyle(BottomSheetDialogFragment.STYLE_NORMAL, R.style.BottomSheetDialog);
+//        return super.onCreateDialog(savedInstanceState);
+
 
         final EditText etNewItem = v.findViewById(R.id.etNewItem);
         tvDisplayDate = v.findViewById(R.id.tvDisplayDate);
