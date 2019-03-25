@@ -4,27 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#1D5B7E"
     tools:context="SignUpActivity">
-
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/my_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        android:elevation="4dp"
-        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
     <EditText
         android:id="@+id/enterName"
-        android:layout_width="178dp"
+        android:layout_width="200dp"
         android:layout_height="67dp"
+        android:hint="email"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
@@ -35,9 +22,10 @@
 
     <EditText
         android:id="@+id/enterPassword"
-        android:layout_width="103dp"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:inputType="textPassword"
+        android:hint="password"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -45,29 +33,17 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Password" />
 
-    <EditText
-        android:id="@+id/confirmPassword"
-        android:layout_width="103dp"
-        android:layout_height="wrap_content"
-        android:inputType="textPassword"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.61"
-        tools:text="Confirm Password" />
-
     <Button
-        android:id="@+id/login"
+        android:id="@+id/signup"
         android:layout_width="109dp"
         android:layout_height="63dp"
         android:text="Sign Up"
+        android:background="@drawable/rounded_btn"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.509"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.784" />
+        app:layout_constraintVertical_bias="0.648" />
 
 
 </android.support.constraint.ConstraintLayout>

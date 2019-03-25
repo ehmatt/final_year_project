@@ -6,6 +6,7 @@ import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialogFragment;
@@ -41,7 +42,8 @@ public class AddTask extends android.support.design.widget.BottomSheetDialogFrag
     }
 
     public TextView tvDisplayDate;
-    public String selectedDate;
+    public EditText addMainTask, addSubtask;
+    public String selectedDate, finalDate;
     public static final int REQUEST_CODE = 11;
 
     @Nullable
@@ -53,37 +55,31 @@ public class AddTask extends android.support.design.widget.BottomSheetDialogFrag
         View v = inflater.inflate(R.layout.add_task_dialog, container,
                 false);
 
-//        setStyle(BottomSheetDialogFragment.STYLE_NORMAL, R.style.BottomSheetDialog);
-//        return super.onCreateDialog(savedInstanceState);
+        addMainTask = v.findViewById(R.id.addTask);
+        addSubtask = v. findViewById(R.id.addSubtask);
 
-
-        final EditText etNewItem = v.findViewById(R.id.etNewItem);
         tvDisplayDate = v.findViewById(R.id.tvDisplayDate);
 
-        final String finalDate = tvDisplayDate.getText().toString();
-
-        Button btn_confirm = (Button)v.findViewById(R.id.btn_confirm);
+        Button btn_confirm = v.findViewById(R.id.btn_confirm);
+        btn_confirm.setTextColor(Color.WHITE);
         btn_confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String input = etNewItem.getText().toString();
-                String input2 = "testing";
-                String date = finalDate;
-//                Date date = new SimpleDateFormat("MM-dd-yyyy").parse(finalDate);
-//                Date date = tvDisplayDate.getText();
+                String mainTask = addMainTask.getText().toString();
+                String subtask = addSubtask.getText().toString();
+                String date = tvDisplayDate.getText().toString();
 
-
-                if(!input.equals("")){
-                    Task task1 = new Task(input, input2, date);
-                    ((HomeActivity)getActivity()).tasks.add(task1);
-//                    etNewItem.setText("");
+                if(!mainTask.equals("")){
+                    Task newTask = new Task(mainTask, subtask, date);
+                    ((HomeActivity)getActivity()).tasks.add(newTask);
                     ((HomeActivity)getActivity()).writeItems();
                 }
 
             }
         });
 
-        Button btn_date = (Button)v.findViewById(R.id.btn_date);
+        Button btn_date = v.findViewById(R.id.btn_date);
+        btn_date.setTextColor(Color.WHITE);
         btn_date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
