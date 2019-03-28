@@ -8,26 +8,43 @@
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/my_toolbar"
+        style="@style/ToolBar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:elevation="4dp"
-        style="@style/ToolBar"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        tools:layout_editor_absoluteX="0dp"
-    />
+        tools:layout_editor_absoluteX="0dp" />
 
-    <ListView
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/task_type_list"
-        android:layout_width="wrap_content"
-        android:layout_height="726dp"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="0dp">
+        android:layout_width="match_parent"
+        android:layout_height="673dp"
+        android:layout_below="@id/my_toolbar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/my_toolbar"
+        />
 
-    </ListView>
+    <!--<ListView-->
+        <!--android:id="@+id/task_list"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"></ListView>-->
+
+    <TextView
+        android:id="@+id/testView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <!--<ListView-->
     <!--android:id="@+id/list_todo"-->
@@ -39,7 +56,7 @@
 
     <Button
         android:id="@+id/button"
-        android:layout_width="248dp"
+        android:layout_width="226dp"
         android:layout_height="wrap_content"
         android:background="@drawable/round_btn_blue"
         android:onClick="addTask"
@@ -49,12 +66,27 @@
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.954" />
+        app:layout_constraintVertical_bias="0.957" />
+
+    <Button
+        android:id="@+id/task_list_btn"
+        android:layout_width="47dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/round_btn_blue"
+        android:onClick="addTaskList"
+        android:text="+"
+        android:textAlignment="center"
+        android:textSize="25dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.956"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.957" />
 
     <android.support.constraint.Barrier
         android:id="@+id/barrier"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:barrierDirection="left" />
-
 </android.support.constraint.ConstraintLayout>
