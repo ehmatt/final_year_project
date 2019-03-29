@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.helper.ItemTouchHelper;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -24,6 +26,7 @@ import org.apache.commons.io.FileUtils;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class HomeActivity extends AppCompatActivity implements AddTaskList.OnInputListener {
     private FirebaseAuth mFirebaseAuth;
@@ -52,6 +55,7 @@ public class HomeActivity extends AppCompatActivity implements AddTaskList.OnInp
 
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         btnAddTask = findViewById(R.id.button);
         btnAddTaskList = findViewById(R.id.task_list_btn);
@@ -78,8 +82,38 @@ public class HomeActivity extends AppCompatActivity implements AddTaskList.OnInp
 //        recyclerTypeAdapter.setClickListener(this);
         recyclerView.setAdapter(recyclerTypeAdapter);
 
+
+        // DRAG N DROP
+        ItemTouchHelper.Callback itemTouchCallback = new ItemTouchHelper.Callback() {
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                Collections.swap(taskList, viewHolder.getAdapterPosition(), target.getAdapterPosition());
+                recyclerTypeAdapter.notifyItemMoved(viewHolder.getAdapterPosition(), target.getAdapterPosition());
+                return true;
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                //TODO
+            }
+
+            @Override
+            public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
+                return makeFlag(ItemTouchHelper.ACTION_STATE_DRAG,
+                        ItemTouchHelper.DOWN | ItemTouchHelper.UP | ItemTouchHelper.START | ItemTouchHelper.END);
+            }
+        };
+
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(itemTouchCallback);
+        itemTouchHelper.attachToRecyclerView(recyclerView);
+
         String listName = "College";
+        String test = "test";
+        String test2 = "test2";
+        String test3 = "test3";
         taskList.add(new TaskList(listName));
+        taskList.add(new TaskList(test));
+        taskList.add(new TaskList(test2));
+        taskList.add(new TaskList(test3));
         recyclerTypeAdapter.notifyDataSetChanged();
     }
 
@@ -104,9 +138,16 @@ public class HomeActivity extends AppCompatActivity implements AddTaskList.OnInp
 
     // MENU STUFF
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.toolbar_action:
+            case R.id.action_favorite:
                 // User chose the "Settings" item, show the app settings UI...
                 startActivity(new Intent(HomeActivity.this, SettingsActivity.class));
                 return true;

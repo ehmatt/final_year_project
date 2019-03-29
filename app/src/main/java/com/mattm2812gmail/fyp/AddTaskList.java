@@ -31,6 +31,7 @@ public class AddTaskList extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState){
         View v = inflater.inflate(R.layout.add_task_list, container, false);
+        v.setMinimumWidth(Integer.parseInt("320"));
 
         eListName = v.findViewById(R.id.create_list);
         btn_confirm = v.findViewById(R.id.btn_confirm);
