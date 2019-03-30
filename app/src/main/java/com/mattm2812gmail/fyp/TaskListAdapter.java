@@ -37,13 +37,13 @@ public class TaskListAdapter extends ArrayAdapter<Task> {
         LayoutInflater inflater = LayoutInflater.from(mContext);
         convertView = inflater.inflate(mResource, parent,false);
 
-        TextView tvTask = convertView.findViewById(R.id.textView1);
-        TextView tvSubTask = convertView.findViewById(R.id.textView2);
-        TextView tvDate = convertView.findViewById(R.id.textView3);
+        TextView tvTask = convertView.findViewById(R.id.task_name);
+        TextView tvSubTask = convertView.findViewById(R.id.subtask);
+//        TextView tvDate = convertView.findViewById(R.id.textView3);
 
         tvTask.setText(task);
         tvSubTask.setText(subtask);
-        tvDate.setText(date);
+//        tvDate.setText(date);
 
         return convertView;
     }

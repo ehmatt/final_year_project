@@ -28,7 +28,7 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
 
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setTitle("Settings");
 
 
         mFirebaseAuth = FirebaseAuth.getInstance();

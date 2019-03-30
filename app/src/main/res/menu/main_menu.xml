@@ -3,10 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/action_favorite"
+        android:id="@+id/home"
+        android:title="home"
+        android:icon="@drawable/home"
+        android:orderInCategory="100"
+        app:showAsAction="always">
+    </item>
+
+    <item
+        android:id="@+id/settings"
         android:orderInCategory="300"
         android:title="User"
-        android:icon="@drawable/settings_icon"
+        android:icon="@drawable/settings_pastel"
         app:showAsAction="ifRoom"></item>
 
 </menu>

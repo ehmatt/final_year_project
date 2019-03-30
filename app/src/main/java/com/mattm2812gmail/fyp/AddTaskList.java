@@ -14,7 +14,6 @@ public class AddTaskList extends DialogFragment {
 
     public interface OnInputListener{
         void sendInput(String input);
-
     }
 
     public OnInputListener mInputListener;
@@ -38,15 +37,13 @@ public class AddTaskList extends DialogFragment {
         btn_confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                TaskList newTaskList = new TaskList(listName);
-                ((HomeActivity)getActivity()).taskList.add(new TaskList(listName));
-                ((HomeActivity)getActivity()).recyclerTypeAdapter.notifyDataSetChanged();
-
-//                listName = eListName.getText().toString();
-//                mInputListener.sendInput(listName);
+                listName = eListName.getText().toString();
+                mInputListener.sendInput(listName);
                 dismiss();
             }
         });
+
+
         return v;
     }
 

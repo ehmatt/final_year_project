@@ -27,6 +27,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
 
 public class HomeActivity extends AppCompatActivity implements AddTaskList.OnInputListener {
     private FirebaseAuth mFirebaseAuth;
@@ -35,6 +37,8 @@ public class HomeActivity extends AppCompatActivity implements AddTaskList.OnInp
     public ArrayList<String> items;
     public ArrayList<Task> tasks;
     public ArrayList<TaskList> taskList;
+
+    public HashMap<String, ArrayList<Task>> hashMap = new HashMap<>();
 
     public TaskListAdapter taskListAdapter;
     public RecyclerTypeAdapter recyclerTypeAdapter;
@@ -74,12 +78,13 @@ public class HomeActivity extends AppCompatActivity implements AddTaskList.OnInp
         }
 
         taskList = new ArrayList<TaskList>();
+//        readItems();
+
 
         RecyclerView recyclerView = findViewById(R.id.task_type_list);
         int numberOfColumns = 2;
         recyclerView.setLayoutManager(new GridLayoutManager(this, numberOfColumns));
         recyclerTypeAdapter = new RecyclerTypeAdapter(this, taskList);
-//        recyclerTypeAdapter.setClickListener(this);
         recyclerView.setAdapter(recyclerTypeAdapter);
 
 
@@ -110,11 +115,18 @@ public class HomeActivity extends AppCompatActivity implements AddTaskList.OnInp
         String test = "test";
         String test2 = "test2";
         String test3 = "test3";
-        taskList.add(new TaskList(listName));
-        taskList.add(new TaskList(test));
-        taskList.add(new TaskList(test2));
-        taskList.add(new TaskList(test3));
+        String name = "new task";
+        String subtask = "new subtask";
+        String date = "date";
+        tasks = new ArrayList<>();
+        Task mTask = new Task(name, subtask, date);
+        tasks.add(mTask);
+        taskList.add(new TaskList(listName, tasks));
+//        taskList.add(new TaskList(test));
+//        taskList.add(new TaskList(test2));
+//        taskList.add(new TaskList(test3));
         recyclerTypeAdapter.notifyDataSetChanged();
+
     }
 
 //    @Override
@@ -147,7 +159,7 @@ public class HomeActivity extends AppCompatActivity implements AddTaskList.OnInp
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_favorite:
+            case R.id.settings:
                 // User chose the "Settings" item, show the app settings UI...
                 startActivity(new Intent(HomeActivity.this, SettingsActivity.class));
                 return true;
@@ -183,9 +195,9 @@ public class HomeActivity extends AppCompatActivity implements AddTaskList.OnInp
         File filesDir = getFilesDir();
         File todoFile = new File(filesDir, "todo.txt");
         try {
-            tasks = new ArrayList<Task>(FileUtils.readLines(todoFile));
+            taskList = new ArrayList<TaskList>(FileUtils.readLines(todoFile));
         } catch (IOException e) {
-            tasks = new ArrayList<>();
+            taskList = new ArrayList<>();
         }
     }
 
@@ -193,7 +205,7 @@ public class HomeActivity extends AppCompatActivity implements AddTaskList.OnInp
         File filesDir = getFilesDir();
         File todoFile = new File(filesDir, "todo.txt");
         try {
-            FileUtils.writeLines(todoFile, tasks);
+            FileUtils.writeLines(todoFile, taskList);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -201,19 +213,14 @@ public class HomeActivity extends AppCompatActivity implements AddTaskList.OnInp
 
     @Override
     public void sendInput(String input) {
-//        TaskList test = new TaskList(input);
-//        taskList.add(test);
-
         mInput = input;
-        setInputToTextView();
+        createNewList();
     }
 
-    private void setInputToTextView(){
-//        TaskList test = new TaskList(mInput);
-//        taskList.add(test);
-//        EditText etNewItem = findViewById(R.id.task_name);
-////        String itemText = etNewItem.getText().toString();
-//        itemsAdapter.add(mInput);
-//        etNewItem.setText("");
+    private void createNewList(){
+        TaskList newTaskList = new TaskList(mInput, new ArrayList<Task>());
+        taskList.add(newTaskList);
+        recyclerTypeAdapter.notifyDataSetChanged();
+        writeItems();
     }
 }
