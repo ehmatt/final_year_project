@@ -39,11 +39,11 @@ public class TaskListAdapter extends ArrayAdapter<Task> {
 
         TextView tvTask = convertView.findViewById(R.id.task_name);
         TextView tvSubTask = convertView.findViewById(R.id.subtask);
-//        TextView tvDate = convertView.findViewById(R.id.textView3);
+        TextView tvDate = convertView.findViewById(R.id.btnDateView);
 
         tvTask.setText(task);
         tvSubTask.setText(subtask);
-//        tvDate.setText(date);
+        tvDate.setText(date);
 
         return convertView;
     }

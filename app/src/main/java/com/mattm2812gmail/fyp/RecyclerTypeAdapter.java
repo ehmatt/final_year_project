@@ -2,6 +2,7 @@ package com.mattm2812gmail.fyp;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
@@ -21,13 +22,13 @@ import java.util.LinkedHashMap;
 
 public class RecyclerTypeAdapter extends RecyclerView.Adapter<RecyclerTypeAdapter.ViewHolder> {
 
+    private static final String TAG = "RecyclerTypeAdapter";
+
     private ArrayList<TaskList> mTaskList;
-    public HashMap<String, ArrayList<Task>> mHashMap = new HashMap<>();
     private Context mContext;
 
     public RecyclerTypeAdapter(Context context, ArrayList<TaskList> taskList) {
         mTaskList = taskList;
-//        mHashMap = hashMap;
         mContext = context;
     }
 
@@ -43,15 +44,21 @@ public class RecyclerTypeAdapter extends RecyclerView.Adapter<RecyclerTypeAdapte
         final TaskList task_list = mTaskList.get(position);
 
         holder.taskName.setText(task_list.getListName());
-        ArrayList<Task> mTasks = task_list.getTasks();
-        final Task myTask = mTasks.get(position);
-        holder.firstTask.setText(myTask.getTask());
-//        holder.taskName.setText(mHashMap.get(position));
+
         holder.parentLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Bundle data = new Bundle();
                 Intent intent = new Intent(mContext, TaskListViewActivity.class);
-                intent.putExtra("taskList", task_list.getListName());
+
+                if (task_list.getTasks().isEmpty() != true) {
+                    final ArrayList<Task> mTasks = task_list.getTasks();
+                    data.putParcelableArrayList("tasks", mTasks);
+                    data.putInt("position", position);
+                }
+
+                data.putString("taskList", task_list.getListName());
+                intent.putExtras(data);
                 mContext.startActivity(intent);
             }
         });

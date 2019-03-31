@@ -34,16 +34,11 @@ public class HomeActivity extends AppCompatActivity implements AddTaskList.OnInp
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
 
-    public ArrayList<String> items;
     public ArrayList<Task> tasks;
     public ArrayList<TaskList> taskList;
 
-    public HashMap<String, ArrayList<Task>> hashMap = new HashMap<>();
-
     public TaskListAdapter taskListAdapter;
     public RecyclerTypeAdapter recyclerTypeAdapter;
-
-    public ArrayAdapter<String> itemsAdapter;
 
     public ListView lvItems;
     public Button btnAddTask, btnAddTaskList;
@@ -78,9 +73,6 @@ public class HomeActivity extends AppCompatActivity implements AddTaskList.OnInp
         }
 
         taskList = new ArrayList<TaskList>();
-//        readItems();
-
-
         RecyclerView recyclerView = findViewById(R.id.task_type_list);
         int numberOfColumns = 2;
         recyclerView.setLayoutManager(new GridLayoutManager(this, numberOfColumns));
@@ -112,9 +104,6 @@ public class HomeActivity extends AppCompatActivity implements AddTaskList.OnInp
         itemTouchHelper.attachToRecyclerView(recyclerView);
 
         String listName = "College";
-        String test = "test";
-        String test2 = "test2";
-        String test3 = "test3";
         String name = "new task";
         String subtask = "new subtask";
         String date = "date";
@@ -122,9 +111,6 @@ public class HomeActivity extends AppCompatActivity implements AddTaskList.OnInp
         Task mTask = new Task(name, subtask, date);
         tasks.add(mTask);
         taskList.add(new TaskList(listName, tasks));
-//        taskList.add(new TaskList(test));
-//        taskList.add(new TaskList(test2));
-//        taskList.add(new TaskList(test3));
         recyclerTypeAdapter.notifyDataSetChanged();
 
     }

@@ -3,18 +3,24 @@ package com.mattm2812gmail.fyp;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-public class TaskListViewActivity extends AppCompatActivity {
+public class TaskListViewActivity extends AppCompatActivity implements AddTask.OnInputListener{
+
+    private static final String TAG = "TaskListViewActivity";
 
     public TextView listName;
     public ListView taskList;
     public ArrayList<Task> tasks;
+    public TaskListAdapter taskListAdapter;
+    public String mInput;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -24,21 +30,24 @@ public class TaskListViewActivity extends AppCompatActivity {
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-        getIncomingIntent();
+
 
         String name = "New Task";
         String subtask = "subtask";
         String date = "30/03";
         tasks = new ArrayList<>();
-        Task mTask = new Task(name, subtask, date);
-        tasks.add(mTask);
+//        Task mTask = new Task(name, subtask, date);
+//        tasks.add(mTask);
 
-        taskList = findViewById(R.id.)
-
-//        Bundle data = getIntent().getExtras();
-//        String taskListName = data.getString("name");
+        taskList = findViewById(R.id.task_list);
         listName = findViewById(R.id.list_name);
-//        listName.setText(taskListName);
+
+
+        TaskListAdapter taskListAdapter = new TaskListAdapter(this, R.layout.task_view_layout, tasks);
+        taskList.setAdapter(taskListAdapter);
+
+        getIncomingIntent();
+        taskListAdapter.notifyDataSetChanged();
 
     }
 
@@ -51,25 +60,45 @@ public class TaskListViewActivity extends AppCompatActivity {
     }
 
     private void getIncomingIntent(){
-        if (getIntent().hasExtra("taskList")){
-            String taskListName = getIntent().getStringExtra("taskList");
-            setData(taskListName);
+        Bundle data = getIntent().getExtras();
+        if (getIntent().hasExtra("taskList")) {
+            String taskListName = data.getString("taskList");
+
+            setTaskName(taskListName);
+        }
+
+        if (getIntent().hasExtra("tasks")){
+            int position = data.getInt("position");
+            ArrayList<Task> newTasks = data.getParcelableArrayList("tasks");
+            Task test =  newTasks.get(position);
+            String newTest = test.getTask();
+            setData(newTasks);
         }
     }
 
-    private void setData(String taskListName){
+    private void setTaskName(String taskListName){
         listName = findViewById(R.id.list_name);
         listName.setText(taskListName);
     }
 
+    private void setData(ArrayList<Task> newTasks){
+        int i = 0;
+        tasks = newTasks;
+        Log.d(TAG, "setData: " + tasks.get(i).getTask());
 
-//    @Override
-//    public void sendInput(String input) {
-//        String mInput = input;
-//        setTextView(mInput);
-//    }
-//
-//    public void setTextView(String mInput){
-//        listName.setText(mInput);
-//    }
+    }
+
+    @Override
+    public void sendInput(Task input) {
+        Task newTask = input;
+        createNewTask(newTask);
+
+    }
+
+    public void createNewTask(Task newTask){
+        tasks.add(newTask);
+        taskListAdapter.notifyDataSetChanged();
+    }
+
+
 }

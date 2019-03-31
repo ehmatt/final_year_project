@@ -3,6 +3,7 @@ package com.mattm2812gmail.fyp;
 import android.R.layout;
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
@@ -37,6 +38,12 @@ import static android.R.layout.simple_list_item_1;
 
 public class AddTask extends android.support.design.widget.BottomSheetDialogFragment {
 
+    public interface OnInputListener{
+        void sendInput(Task input);
+    }
+
+    public OnInputListener mInputListener;
+
     public static AddTask newInstance() {
         return new AddTask();
     }
@@ -57,7 +64,6 @@ public class AddTask extends android.support.design.widget.BottomSheetDialogFrag
 
         addMainTask = v.findViewById(R.id.addTask);
         addSubtask = v. findViewById(R.id.addSubtask);
-
         tvDisplayDate = v.findViewById(R.id.tvDisplayDate);
 
         Button btn_confirm = v.findViewById(R.id.btn_confirm);
@@ -68,12 +74,11 @@ public class AddTask extends android.support.design.widget.BottomSheetDialogFrag
                 String mainTask = addMainTask.getText().toString();
                 String subtask = addSubtask.getText().toString();
                 String date = tvDisplayDate.getText().toString();
+                
+                Task newTask = new Task(mainTask, subtask, date);
 
-                if(!mainTask.equals("")){
-                    Task newTask = new Task(mainTask, subtask, date);
-                    ((HomeActivity)getActivity()).tasks.add(newTask);
-                    ((HomeActivity)getActivity()).writeItems();
-                }
+                mInputListener.sendInput(newTask);
+                dismiss();
 
             }
         });
@@ -103,4 +108,17 @@ public class AddTask extends android.support.design.widget.BottomSheetDialogFrag
             tvDisplayDate.setText(selectedDate);
 
     }
+
+    @Override
+    public void onAttach(Context context){
+        super.onAttach(context);
+
+        try{
+            mInputListener = (AddTask.OnInputListener) getActivity();
+
+        }catch(ClassCastException e){
+
+        }
+    }
+
 }

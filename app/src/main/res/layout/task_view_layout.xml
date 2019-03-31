@@ -17,35 +17,42 @@
         android:layout_height="wrap_content">
 
         <Button
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:background="@drawable/checkmark"
-            tools:layout_editor_absoluteY="5dp" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.013"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.454" />
 
         <TextView
             android:id="@+id/task_name"
-            android:layout_width="215dp"
-            android:layout_height="51dp"
+            android:layout_width="176dp"
+            android:layout_height="33dp"
             android:text="Task"
-            android:textSize="30dp"
+            android:textSize="25dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.229"
+            app:layout_constraintHorizontal_bias="0.242"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintVertical_bias="0.571" />
 
         <Button
             android:id="@+id/btnDateView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Date"
+            android:layout_width="41dp"
+            android:layout_height="28dp"
+            android:background="@drawable/rounded_btn"
+            android:text="Apr 5"
+            android:textSize="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.922"
+            app:layout_constraintHorizontal_bias="0.956"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.333" />
+            app:layout_constraintVertical_bias="0.6" />
 
     </android.support.constraint.ConstraintLayout>
 
@@ -61,19 +68,21 @@
 
         <TextView
             android:id="@+id/subtask"
-            android:layout_width="215dp"
+            android:layout_width="277dp"
             android:layout_height="35dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
             android:text="Subtask"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/button2"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0" />
 
         <Button
             android:id="@+id/button2"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:background="@drawable/check_sub"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
