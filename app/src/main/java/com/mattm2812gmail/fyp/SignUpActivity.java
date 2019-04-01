@@ -16,14 +16,17 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class SignUpActivity extends AppCompatActivity implements View.OnClickListener {
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
+    private DatabaseReference mDatabase;
 
     private Button btnSignup;
     private EditText getUsername, getPassword;
-    private String username, password;
+    private String email, password;
 
     private ProgressDialog progressDialog;
 
@@ -33,11 +36,13 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.signup);
 
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+
         btnSignup = findViewById(R.id.signup);
         getUsername = findViewById(R.id.enterName);
         getPassword = findViewById(R.id.enterPassword);
 
-        username = getUsername.getText().toString().trim();
+        email = getUsername.getText().toString().trim();
         password = getPassword.getText().toString().trim();
 
 
@@ -57,20 +62,30 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         progressDialog.setMessage("Signing up...");
         progressDialog.show();
 
-        username = getUsername.getText().toString().trim();
+        email = getUsername.getText().toString().trim();
         password = getPassword.getText().toString().trim();
 
         mFirebaseAuth = FirebaseAuth.getInstance();
-        mFirebaseAuth.createUserWithEmailAndPassword(username, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+        mFirebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()){
-                    finish();
-                    startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                    onAuthSuccess(task.getResult().getUser());
                 }else{
                     Toast.makeText(SignUpActivity.this,"Registration Error",Toast.LENGTH_LONG).show();
                 }
             }
         });
+    }
+
+    public void onAuthSuccess(FirebaseUser user){
+        writeNewUser(user.getUid(), user.getEmail());
+        finish();
+        startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+    }
+
+    public void writeNewUser(String uID, String email){
+        User user = new User(email);
+        mDatabase.child("users").child(uID).setValue(user);
     }
 }

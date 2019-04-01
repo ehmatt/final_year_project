@@ -74,7 +74,7 @@ public class AddTask extends android.support.design.widget.BottomSheetDialogFrag
                 String mainTask = addMainTask.getText().toString();
                 String subtask = addSubtask.getText().toString();
                 String date = tvDisplayDate.getText().toString();
-                
+
                 Task newTask = new Task(mainTask, subtask, date);
 
                 mInputListener.sendInput(newTask);

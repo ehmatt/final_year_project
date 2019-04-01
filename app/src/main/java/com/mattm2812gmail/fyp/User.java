@@ -2,26 +2,22 @@ package com.mattm2812gmail.fyp;
 
 public class User {
 
-    private String email, password;
+    private String email;
 
-    public User(String email, String password){
+    public User(){
+
+    }
+
+    public User(String email){
         this.email = email;
-        this.password = password;
     }
 
     public String getEmail(){
         return email;
     }
 
-    public String getPassword(){
-        return password;
-    }
-
     public void setEmail(){
         this.email = email;
     }
 
-    public void setPassword(){
-        this.password = password;
-    }
 }

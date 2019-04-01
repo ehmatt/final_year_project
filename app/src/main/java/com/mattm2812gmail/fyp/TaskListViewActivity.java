@@ -20,7 +20,6 @@ public class TaskListViewActivity extends AppCompatActivity implements AddTask.O
     public ListView taskList;
     public ArrayList<Task> tasks;
     public TaskListAdapter taskListAdapter;
-    public String mInput;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -35,20 +34,15 @@ public class TaskListViewActivity extends AppCompatActivity implements AddTask.O
         String name = "New Task";
         String subtask = "subtask";
         String date = "30/03";
-        tasks = new ArrayList<>();
-//        Task mTask = new Task(name, subtask, date);
-//        tasks.add(mTask);
-
         taskList = findViewById(R.id.task_list);
         listName = findViewById(R.id.list_name);
 
-
-        TaskListAdapter taskListAdapter = new TaskListAdapter(this, R.layout.task_view_layout, tasks);
+        tasks = new ArrayList<>();
+        taskListAdapter = new TaskListAdapter(this, R.layout.task_view_layout, tasks);
         taskList.setAdapter(taskListAdapter);
 
         getIncomingIntent();
         taskListAdapter.notifyDataSetChanged();
-
     }
 
     public void addTask(View view){
@@ -84,6 +78,7 @@ public class TaskListViewActivity extends AppCompatActivity implements AddTask.O
     private void setData(ArrayList<Task> newTasks){
         int i = 0;
         tasks = newTasks;
+        taskListAdapter.notifyDataSetChanged();
         Log.d(TAG, "setData: " + tasks.get(i).getTask());
 
     }

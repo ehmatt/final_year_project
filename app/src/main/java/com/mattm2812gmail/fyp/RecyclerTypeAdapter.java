@@ -52,6 +52,7 @@ public class RecyclerTypeAdapter extends RecyclerView.Adapter<RecyclerTypeAdapte
                 Intent intent = new Intent(mContext, TaskListViewActivity.class);
 
                 if (task_list.getTasks().isEmpty() != true) {
+                    Log.d(TAG, "onClick: not empty");
                     final ArrayList<Task> mTasks = task_list.getTasks();
                     data.putParcelableArrayList("tasks", mTasks);
                     data.putInt("position", position);

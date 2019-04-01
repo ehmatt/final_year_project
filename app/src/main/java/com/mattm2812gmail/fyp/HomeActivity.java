@@ -20,6 +20,8 @@ import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import org.apache.commons.io.FileUtils;
 
@@ -33,6 +35,7 @@ import java.util.HashMap;
 public class HomeActivity extends AppCompatActivity implements AddTaskList.OnInputListener {
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
+    private DatabaseReference mDatabase;
 
     public ArrayList<Task> tasks;
     public ArrayList<TaskList> taskList;
@@ -56,13 +59,6 @@ public class HomeActivity extends AppCompatActivity implements AddTaskList.OnInp
         setSupportActionBar(myToolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        btnAddTask = findViewById(R.id.button);
-        btnAddTaskList = findViewById(R.id.task_list_btn);
-        btnAddTask.setTextColor(Color.WHITE);
-        btnAddTaskList.setTextColor(Color.WHITE);
-
-        mInputDisplay = findViewById(R.id.testView);
-
         // firebase login check
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
@@ -71,6 +67,14 @@ public class HomeActivity extends AppCompatActivity implements AddTaskList.OnInp
             finish();
             return;
         }
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+
+        btnAddTask = findViewById(R.id.button);
+        btnAddTaskList = findViewById(R.id.task_list_btn);
+        btnAddTask.setTextColor(Color.WHITE);
+        btnAddTaskList.setTextColor(Color.WHITE);
+
+        mInputDisplay = findViewById(R.id.testView);
 
         taskList = new ArrayList<TaskList>();
         RecyclerView recyclerView = findViewById(R.id.task_type_list);
@@ -112,7 +116,6 @@ public class HomeActivity extends AppCompatActivity implements AddTaskList.OnInp
         tasks.add(mTask);
         taskList.add(new TaskList(listName, tasks));
         recyclerTypeAdapter.notifyDataSetChanged();
-
     }
 
 //    @Override
