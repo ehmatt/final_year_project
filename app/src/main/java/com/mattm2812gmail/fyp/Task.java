@@ -10,6 +10,7 @@ public class Task implements Parcelable {
     private String task, subtask;
     private String date;
 
+    public Task(){}
     public Task(String task, String subtask, String date) {
         this.task = task;
         this.subtask = subtask;

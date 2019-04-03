@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
-public class AddTaskList extends DialogFragment {
+public class AddTaskList extends android.support.design.widget.BottomSheetDialogFragment {
 
     public interface OnInputListener{
         void sendInput(String input);
@@ -42,7 +42,6 @@ public class AddTaskList extends DialogFragment {
                 dismiss();
             }
         });
-
 
         return v;
     }
