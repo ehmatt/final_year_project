@@ -11,9 +11,7 @@ public class TaskList {
     private String taskListName;
     private HashMap<String, HashMap<String, String>> mHashMap;
 
-    public TaskList(){
-
-    }
+    public TaskList(){}
 
     public TaskList(String listName, HashMap<String, HashMap<String, String>> hashMap){
         taskListName = listName;

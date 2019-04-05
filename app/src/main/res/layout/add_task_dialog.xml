@@ -25,10 +25,11 @@
             android:id="@+id/addTask"
             android:layout_width="225dp"
             android:layout_height="56dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
             android:hint="Enter a new task"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintEnd_toStartOf="@+id/btnDisplayDate"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.476" />
@@ -96,14 +97,16 @@
 
         <Button
             android:id="@+id/btn_confirm"
-            android:layout_width="121dp"
+            android:layout_width="85dp"
             android:layout_height="45dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
             android:background="@drawable/round_btn_blue"
             android:text="Confirm"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.992"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintHorizontal_bias="0.982"
+            app:layout_constraintStart_toEndOf="@+id/addSubtask"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0" />
 

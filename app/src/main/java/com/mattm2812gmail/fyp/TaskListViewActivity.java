@@ -2,6 +2,9 @@ package com.mattm2812gmail.fyp;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -9,15 +12,27 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class TaskListViewActivity extends AppCompatActivity implements AddTask.OnInputListener{
 
     private static final String TAG = "TaskListViewActivity";
 
+    private FirebaseAuth mFirebaseAuth;
+    private FirebaseUser mFirebaseUser;
+    private DatabaseReference mDatabase;
+    public String userID;
+
     public TextView listName;
-    public ListView taskList;
     public ArrayList<Task> tasks;
     public TaskListAdapter taskListAdapter;
 
@@ -30,16 +45,25 @@ public class TaskListViewActivity extends AppCompatActivity implements AddTask.O
         setSupportActionBar(myToolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
+        mFirebaseAuth = FirebaseAuth.getInstance();
+        mFirebaseUser = mFirebaseAuth.getCurrentUser();
+
+        userID = mFirebaseUser.getUid();
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(userID);
+
 
         String name = "New Task";
         String subtask = "subtask";
         String date = "30/03";
-        taskList = findViewById(R.id.task_list);
+//        taskList = findViewById(R.id.task_list);
         listName = findViewById(R.id.list_name);
 
         tasks = new ArrayList<>();
-        taskListAdapter = new TaskListAdapter(this, R.layout.task_view_layout, tasks);
-        taskList.setAdapter(taskListAdapter);
+        RecyclerView recyclerView = findViewById(R.id.task_list);
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 1));
+
+        taskListAdapter = new TaskListAdapter(this, tasks);
+        recyclerView.setAdapter(taskListAdapter);
 
         getIncomingIntent();
         taskListAdapter.notifyDataSetChanged();
@@ -62,11 +86,9 @@ public class TaskListViewActivity extends AppCompatActivity implements AddTask.O
         }
 
         if (getIntent().hasExtra("tasks")){
-            int position = data.getInt("position");
-            ArrayList<Task> newTasks = data.getParcelableArrayList("tasks");
-            Task test =  newTasks.get(position);
-            String newTest = test.getTask();
-            setData(newTasks);
+            HashMap<String, HashMap<String, String>> newTasks = (HashMap<String, HashMap<String, String>>) data.getSerializable("tasks");
+            String taskListName = data.getString("taskList");
+            setData(newTasks, taskListName);
         }
     }
 
@@ -75,11 +97,27 @@ public class TaskListViewActivity extends AppCompatActivity implements AddTask.O
         listName.setText(taskListName);
     }
 
-    private void setData(ArrayList<Task> newTasks){
-        int i = 0;
-        tasks = newTasks;
-        taskListAdapter.notifyDataSetChanged();
-        Log.d(TAG, "setData: " + tasks.get(i).getTask());
+    private void setData(HashMap<String, HashMap<String, String>> newTasks, String name){
+//        int i = 0;
+        for (Map.Entry<String, HashMap<String, String>> entry : newTasks.entrySet()) {
+            String taskName = entry.getKey();
+            HashMap<String, String> itMap = entry.getValue();
+            String task = itMap.get("task");
+            String subtask = itMap.get("subtask");
+            String date = itMap.get("date");
+
+            Log.d(TAG, "setData: " + taskName);
+            Log.d(TAG, "setData: " + entry.getValue());
+            Task newTask = new Task(task, subtask, date);
+            tasks.add(newTask);
+            taskListAdapter.notifyDataSetChanged();
+        }
+
+//        Task newTask = new Task(name, newTasks);
+//        tasks.add(newTask);
+
+
+//        Log.d(TAG, "setData: " + tasks.get(i).getTask());
 
     }
 
@@ -91,8 +129,16 @@ public class TaskListViewActivity extends AppCompatActivity implements AddTask.O
     }
 
     public void createNewTask(Task newTask){
+        String taskListName = listName.getText().toString();
+
         tasks.add(newTask);
         taskListAdapter.notifyDataSetChanged();
+
+        HashMap<String, String> taskMap = new HashMap<>();
+        taskMap.put("date", newTask.getDate());
+        taskMap.put("subtask", newTask.getSubtask());
+        taskMap.put("task", newTask.getTask());
+        mDatabase.child("TaskList").child(taskListName).child("mHashMap").child(newTask.getTask()).setValue(newTask);
     }
 
 

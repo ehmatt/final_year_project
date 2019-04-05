@@ -33,6 +33,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 
 import static android.R.layout.simple_list_item_1;
 
@@ -79,7 +80,6 @@ public class AddTask extends android.support.design.widget.BottomSheetDialogFrag
 
                 mInputListener.sendInput(newTask);
                 dismiss();
-
             }
         });
 

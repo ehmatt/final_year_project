@@ -1,7 +1,13 @@
 package com.mattm2812gmail.fyp;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.content.Intent;
@@ -17,7 +23,10 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -25,6 +34,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 import org.apache.commons.io.FileUtils;
 
@@ -37,9 +48,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-public class HomeActivity extends AppCompatActivity implements AddTaskList.OnInputListener {
+public class HomeActivity extends AppCompatActivity implements AddTaskList.OnInputListener{
     private static final String TAG = "HomeActivity";
-    
+
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
     private DatabaseReference mDatabase;
@@ -48,7 +59,6 @@ public class HomeActivity extends AppCompatActivity implements AddTaskList.OnInp
     public ArrayList<TaskList> taskList;
     public HashMap<String, ArrayList<Task>> mHashMap;
 
-    public TaskListAdapter taskListAdapter;
     public RecyclerTypeAdapter recyclerTypeAdapter;
 
     public ListView lvItems;
@@ -57,17 +67,20 @@ public class HomeActivity extends AppCompatActivity implements AddTaskList.OnInp
     public TextView mInputDisplay;
 
     public String userID;
-
-    Context context = this;
+    public boolean isNightModeEnabled = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        FirebaseApp.initializeApp(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_activity);
 
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        SharedPreferences mPrefs =  PreferenceManager.getDefaultSharedPreferences(this);
+        this.isNightModeEnabled = mPrefs.getBoolean("night_mode", false);
 
         // firebase login check
         mFirebaseAuth = FirebaseAuth.getInstance();
@@ -81,18 +94,23 @@ public class HomeActivity extends AppCompatActivity implements AddTaskList.OnInp
         userID = mFirebaseUser.getUid();
         mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(userID);
 
-//        String mUser = mDatabase.getRoot().child("users").child();
+        Button notif = findViewById(R.id.notification);
+        notif.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addNotification();
+            }
+        });
+
 
         btnAddTask = findViewById(R.id.button);
         btnAddTaskList = findViewById(R.id.task_list_btn);
-        btnAddTask.setTextColor(Color.WHITE);
-        btnAddTaskList.setTextColor(Color.WHITE);
 
         mInputDisplay = findViewById(R.id.testView);
 
         mHashMap = new HashMap<>();
 
-        taskList = new ArrayList<TaskList>();
+        taskList = new ArrayList<>();
         RecyclerView recyclerView = findViewById(R.id.task_type_list);
         int numberOfColumns = 2;
         recyclerView.setLayoutManager(new GridLayoutManager(this, numberOfColumns));
@@ -123,19 +141,7 @@ public class HomeActivity extends AppCompatActivity implements AddTaskList.OnInp
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(itemTouchCallback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
 
-//        String listName = "College";
-//        String name = "new task";
-//        String subtask = "new subtask";
-//        String date = "date";
         tasks = new ArrayList<>();
-//        Task mTask = new Task(name, subtask, date);
-//        tasks.add(mTask);
-//        TaskList newTaskList = new TaskList();
-//        newTaskList.setTasks(tasks);
-//        newTaskList.setListName(listName);
-//        taskList.add(newTaskList);
-//        recyclerTypeAdapter.notifyDataSetChanged();
-
 
         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
         DatabaseReference favoritesRef = rootRef.child("users").child(userID).child("TaskList");
@@ -143,91 +149,19 @@ public class HomeActivity extends AppCompatActivity implements AddTaskList.OnInp
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot ds : dataSnapshot.getChildren()) {
-                    Object test = ds.getValue();
-                    Log.d(TAG, "onDataChange: " + test);
                     TaskList newTaskList = ds.getValue(TaskList.class);
                     taskList.add(newTaskList);
                     recyclerTypeAdapter.notifyDataSetChanged();
-                    String name = newTaskList.getTaskListName();
-                    HashMap<String, HashMap<String, String>> test2 = newTaskList.getmHashMap();
-                    Log.d(TAG, "onDataChange: " + name);
-                    Log.d(TAG, "onDataChange: " + test2);
                 }
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {}
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
         };
         favoritesRef.addListenerForSingleValueEvent(eventListener);
 
-
-
-
-
-
-//        mDatabase.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                for (DataSnapshot ds: dataSnapshot.getChildren()){
-//                    TaskList mTaskList = ds.child(userID).child("TaskList").getValue(TaskList.class);
-//                    String name = mTaskList.getTaskListName();
-//                    Log.d(TAG, "onDataChange: " + name);
-//                    HashMap<String, HashMap<String, HashMap<String, String>>> myHashMap = new HashMap<>();
-//
-//                    Log.d(TAG, "onDataChange: " + ds.child(userID).child("TaskList").getValue());
-
-//                    Iterator it = mTaskList.getmHashMap().entrySet().iterator();
-//                    while (it.hasNext()){
-//                        Map.Entry pair = (Map.Entry)it.next();
-//                        it.remove();
-//                    }
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError error) {
-//                // Failed to read value
-//                Log.w(TAG, "Failed to read value.", error.toException());
-//            }
-//        });
-//    }
-
-//    public void showData(DataSnapshot dataSnapshot){
-//        for (DataSnapshot ds : dataSnapshot.child(userID).getChildren()){
-//            TaskList newList = new TaskList();
-//            newList.setListName(String.valueOf(ds.child("taskLists").getValue(TaskList.class)));
-////            newList.setTasks((ds.child("taskLists").getValue(TaskList.class)));
-//            Log.d(TAG, "showData: " + newList.getListName());
-
-//            Object anotherTest = ds.child(userID);
-//            Log.d(TAG, "showData: " + anotherTest);
-//            HashMap testData = ds.child(userID).getValue();
-//            Log.d(TAG, "showData: " + testData);
-//            Object name = testData.get("College");
-//            ArrayList<Object> mArray = new ArrayList<>();
-//            mArray.add(testData);
-//            String name = mArray.get(0);
-//            TaskList newName = (TaskList)name;
-//            Log.d(TAG, "showData: " + newName);
-
-//            TaskList newTaskList = new TaskList(ds);
-//            newTaskList = ds.child(userID).getValue(TaskList.class);
-//            Log.d(TAG, "showData: " + taskList);
-//            taskList.add(newTaskList);
-//            String list_name = taskList.get(0).getListName();
-//            Log.d(TAG, "showData: " + list_name);
-//
-////            TaskList newTaskList = new TaskList();
-//            newTaskList.setListName(ds.child(userID).getValue(TaskList.class).getListName());
-//            newTaskList.setTasks(ds.child(userID).getValue(TaskList.class).getTasks());
-
-//            Object mObject = ds.child(userID).getValue();
-////            Log.d(TAG, "showData: " + test);
-//            ArrayList<Object> listOfTasks = new ArrayList<>();
-//            listOfTasks.add(mObject);
-//            Log.d(TAG, "showData: " + listOfTasks);
-//            recyclerTypeAdapter.notifyDataSetChanged();
-//        }
     }
 
 
@@ -269,45 +203,6 @@ public class HomeActivity extends AppCompatActivity implements AddTaskList.OnInp
         }
     }
 
-
-    private void setupListViewListener() {
-        lvItems.setOnItemLongClickListener(
-                new AdapterView.OnItemLongClickListener() {
-                    @Override
-                    public boolean onItemLongClick(AdapterView<?> adapter,
-                                                   View item, int pos, long id) {
-                        // Remove the item within array at position
-                        tasks.remove(pos);
-                        // Refresh the adapter
-//                        taskListAdapter.notifyDataSetChanged();
-                        writeItems();
-                        // Return true consumes the long click event (marks it handled)
-                        return true;
-                    }
-
-                });
-    }
-
-    private void readItems() {
-        File filesDir = getFilesDir();
-        File todoFile = new File(filesDir, "todo.txt");
-        try {
-            taskList = new ArrayList<TaskList>(FileUtils.readLines(todoFile));
-        } catch (IOException e) {
-            taskList = new ArrayList<>();
-        }
-    }
-
-    public void writeItems() {
-        File filesDir = getFilesDir();
-        File todoFile = new File(filesDir, "todo.txt");
-        try {
-            FileUtils.writeLines(todoFile, taskList);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     @Override
     public void sendInput(String input) {
         mInput = input;
@@ -315,6 +210,7 @@ public class HomeActivity extends AppCompatActivity implements AddTaskList.OnInp
     }
 
     private void createNewList(String mInput){
+        // sample task created and added to hashmap
         HashMap<String, String> taskMap = new HashMap<>();
         taskMap.put("task", "Sample Task");
         taskMap.put("subtask", "Sample Subtask");
@@ -322,10 +218,50 @@ public class HomeActivity extends AppCompatActivity implements AddTaskList.OnInp
         HashMap<String, HashMap<String, String>> nHashMap = new HashMap<>();
         nHashMap.put("Task1", taskMap);
 
+        // task list created containing the list name (mInput) and
+        // and the previously created hashmap
         TaskList newTaskList = new TaskList(mInput, nHashMap);
 
+        // map is pushed to the database
         mDatabase.child("TaskList").child(mInput).setValue(newTaskList);
+        taskList.add(newTaskList);
         recyclerTypeAdapter.notifyDataSetChanged();
-        writeItems();
     }
+    private void addNotification() {
+//        NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
+//                        .setSmallIcon(R.drawable.logo)
+//                        .setContentTitle("Task")
+//                        .setContentText("This is a test notification")
+//                        .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+//
+//        Intent notificationIntent = new Intent(this, HomeActivity.class);
+//        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent,
+//                PendingIntent.FLAG_UPDATE_CURRENT);
+//        builder.setContentIntent(contentIntent);
+//
+//        // Add as notification
+//        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+//        manager.notify(0, builder.build());
+//        FirebaseInstanceId.getInstance().getInstanceId()
+//                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+//                        if (!task.isSuccessful()) {
+//                            Log.w(TAG, "getInstanceId failed", task.getException());
+//                            return;
+//                        }
+//
+//                        // Get new Instance ID token
+//                        String token = task.getResult().getToken();
+//
+//                        // Log and toast
+//                        String msg = getString(R.string.msg_token_fmt, token);
+//                        Log.d(TAG, msg);
+//                        Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+//                    }
+//                });
+
+    }
+
+
 }

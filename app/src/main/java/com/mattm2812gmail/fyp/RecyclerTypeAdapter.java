@@ -2,9 +2,11 @@ package com.mattm2812gmail.fyp;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +16,11 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -43,7 +50,13 @@ public class RecyclerTypeAdapter extends RecyclerView.Adapter<RecyclerTypeAdapte
     public void onBindViewHolder(ViewHolder holder, final int position) {
         final TaskList task_list = mTaskList.get(position);
 
-//        holder.taskName.setText(task_list.getListName());
+        holder.taskName.setText(task_list.getTaskListName());
+        if (task_list.getmHashMap() == null){
+            holder.firstTask.setText("0");
+        }else{
+            int size = task_list.getmHashMap().size();
+            holder.firstTask.setText(Integer.toString(size));
+        }
 
         holder.parentLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,24 +64,15 @@ public class RecyclerTypeAdapter extends RecyclerView.Adapter<RecyclerTypeAdapte
                 Bundle data = new Bundle();
                 Intent intent = new Intent(mContext, TaskListViewActivity.class);
 
-//                if (task_list.getTasks().isEmpty() != true) {
-////                    final ArrayList<Task> mTasks = task_list.getTasks();
-////                    data.putParcelableArrayList("tasks", mTasks);
-//                    data.putInt("position", position);
-//                }
+                if (task_list.getmHashMap() != null) {
+                    final HashMap<String, HashMap<String, String>> mTasks = task_list.getmHashMap();
+                    data.putSerializable("tasks", mTasks);
+                    data.putInt("position", position);
+                }
 
-//                data.putString("taskList", task_list.getListName());
+                data.putString("taskList", task_list.getTaskListName());
                 intent.putExtras(data);
                 mContext.startActivity(intent);
-            }
-        });
-
-        holder.delete.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-//                mTaskList.remove(getAdapterPosition());
-//                notifyItemRemoved(getAdapterPosition());
-//                notifyItemRangeChanged(getAdapterPosition(),mTaskList.size());
             }
         });
     }
@@ -86,12 +90,30 @@ public class RecyclerTypeAdapter extends RecyclerView.Adapter<RecyclerTypeAdapte
         Button delete;
         ConstraintLayout parentLayout;
 
+        private FirebaseAuth mFirebaseAuth = FirebaseAuth.getInstance();
+        private FirebaseUser mFirebaseUser = mFirebaseAuth.getCurrentUser();
+        private String userID = mFirebaseUser.getUid();
+        private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(userID);
+
+
         public ViewHolder(View itemView) {
             super(itemView);
             taskName = itemView.findViewById(R.id.task_name);
             firstTask = itemView.findViewById(R.id.first_task);
-            delete = itemView.findViewById(R.id.remove_task);
+            delete = itemView.findViewById(R.id.remove_task_list);
             parentLayout = itemView.findViewById(R.id.parent_layout);
+
+            delete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    TaskList removeList = mTaskList.get(getAdapterPosition());
+                    mDatabase.child("TaskList").child(removeList.getTaskListName()).removeValue();
+                    mTaskList.remove(getAdapterPosition());
+                    notifyItemRemoved(getAdapterPosition());
+                    notifyItemRangeChanged(getAdapterPosition(), mTaskList.size());
+
+                }
+            });
         }
     }
 

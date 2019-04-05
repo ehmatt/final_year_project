@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/parent_view"
     tools:context=".TaskListViewActivity">
 
     <android.support.v7.widget.Toolbar
@@ -24,6 +25,7 @@
         android:layout_width="175dp"
         android:layout_height="75dp"
         android:layout_gravity="center"
+        android:text="College"
         android:textSize="50dp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -43,7 +45,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.117" />
 
-    <ListView
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/task_list"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -60,6 +62,7 @@
         android:background="@drawable/round_btn_blue"
         android:onClick="addTask"
         android:text="Add Task"
+        android:textColor="#ffffff"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
