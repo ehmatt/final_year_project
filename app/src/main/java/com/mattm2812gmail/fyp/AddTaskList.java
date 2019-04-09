@@ -3,7 +3,6 @@ package com.mattm2812gmail.fyp;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +11,7 @@ import android.widget.EditText;
 
 public class AddTaskList extends android.support.design.widget.BottomSheetDialogFragment {
 
+    // interface for sending data
     public interface OnInputListener{
         void sendInput(String input);
     }
@@ -34,6 +34,8 @@ public class AddTaskList extends android.support.design.widget.BottomSheetDialog
 
         eListName = v.findViewById(R.id.create_list);
         btn_confirm = v.findViewById(R.id.btn_confirm);
+
+        //add task list
         btn_confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

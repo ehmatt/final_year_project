@@ -14,13 +14,14 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         FirebaseApp.initializeApp(this);
-// We load the Night Mode state here
         SharedPreferences mPrefs =  PreferenceManager.getDefaultSharedPreferences(this);
-//        this.isNightModeEnabled = mPrefs.getBoolean(“NIGHT_MODE”, false);
-        }
+        this.isNightModeEnabled = mPrefs.getBoolean("NIGHT_MODE", false);
+    }
+
         public boolean isNightModeEnabled() {
             return isNightModeEnabled;
         }
+
         public void setIsNightModeEnabled(boolean isNightModeEnabled) {
             this.isNightModeEnabled = isNightModeEnabled;
         }

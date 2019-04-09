@@ -2,34 +2,24 @@ package com.mattm2812gmail.fyp;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 
 public class RecyclerTypeAdapter extends RecyclerView.Adapter<RecyclerTypeAdapter.ViewHolder> {
-
-    private static final String TAG = "RecyclerTypeAdapter";
 
     private ArrayList<TaskList> mTaskList;
     private Context mContext;
@@ -50,6 +40,8 @@ public class RecyclerTypeAdapter extends RecyclerView.Adapter<RecyclerTypeAdapte
     public void onBindViewHolder(ViewHolder holder, final int position) {
         final TaskList task_list = mTaskList.get(position);
 
+        // if the list has no tasks
+        // set view to 0
         holder.taskName.setText(task_list.getTaskListName());
         if (task_list.getmHashMap() == null){
             holder.firstTask.setText("0");
@@ -58,6 +50,7 @@ public class RecyclerTypeAdapter extends RecyclerView.Adapter<RecyclerTypeAdapte
             holder.firstTask.setText(Integer.toString(size));
         }
 
+        // on click, bundle task data and send to activity
         holder.parentLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -103,6 +96,7 @@ public class RecyclerTypeAdapter extends RecyclerView.Adapter<RecyclerTypeAdapte
             delete = itemView.findViewById(R.id.remove_task_list);
             parentLayout = itemView.findViewById(R.id.parent_layout);
 
+            // remove task from array list and data base
             delete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

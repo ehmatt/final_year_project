@@ -1,16 +1,11 @@
 package com.mattm2812gmail.fyp;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.graphics.Color;
-
-import android.content.Intent;
-
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -42,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         setContentView(R.layout.activity_main);
 
+        // firebase login check
         mFirebaseAuth = FirebaseAuth.getInstance();
         if(mFirebaseAuth.getCurrentUser() != null){
             finish();
@@ -78,6 +74,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         username = etUsername.getText().toString();
         password = etPassword.getText().toString();
 
+        // check log in with firebase
         mFirebaseAuth.signInWithEmailAndPassword(username, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -89,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             finish();
                             startActivity(new Intent(MainActivity.this, HomeActivity.class));
                         }else{
-                            Toast.makeText(MainActivity.this,"Error",Toast.LENGTH_LONG).show();
+                            Toast.makeText(MainActivity.this,"Error logging in, please try again.",Toast.LENGTH_LONG).show();
                         }
                     }
                 });

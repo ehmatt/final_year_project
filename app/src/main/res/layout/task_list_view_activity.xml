@@ -25,14 +25,17 @@
         android:layout_width="175dp"
         android:layout_height="75dp"
         android:layout_gravity="center"
+        android:background="@drawable/rounded_btn"
+        android:elevation="2dp"
+        android:gravity="center"
         android:text="College"
-        android:textSize="50dp"
+        android:textSize="45dp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.105" />
+        app:layout_constraintVertical_bias="0.112" />
 
     <TextView
         android:id="@+id/size"

@@ -34,19 +34,19 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.476" />
 
-        <Button
-            android:id="@+id/btnDisplayDate"
-            android:layout_width="40dp"
-            android:layout_height="38dp"
-            android:background="@drawable/rounded_btn"
-            android:text="30/03"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.746"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.589" />
+        <!--<Button-->
+            <!--android:id="@+id/btnDisplayDate"-->
+            <!--android:layout_width="40dp"-->
+            <!--android:layout_height="38dp"-->
+            <!--android:background="@drawable/rounded_btn"-->
+            <!--android:text="30/03"-->
+            <!--android:textStyle="bold"-->
+            <!--app:layout_constraintBottom_toBottomOf="parent"-->
+            <!--app:layout_constraintEnd_toEndOf="parent"-->
+            <!--app:layout_constraintHorizontal_bias="0.746"-->
+            <!--app:layout_constraintStart_toStartOf="parent"-->
+            <!--app:layout_constraintTop_toTopOf="parent"-->
+            <!--app:layout_constraintVertical_bias="0.589" />-->
 
         <Button
             android:id="@+id/btn_date"
@@ -65,6 +65,7 @@
             android:id="@+id/tvDisplayDate"
             android:layout_width="44dp"
             android:layout_height="13dp"
+            android:textColor="#ffffff"
             tools:layout_editor_absoluteX="0dp"
             tools:layout_editor_absoluteY="0dp" />
 
