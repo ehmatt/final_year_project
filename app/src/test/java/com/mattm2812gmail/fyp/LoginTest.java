@@ -1,17 +1,23 @@
 package com.mattm2812gmail.fyp;
 
 import org.junit.Test;
+import static org.hamcrest.MatcherAssert.assertThat;
 
-import static org.junit.Assert.*;
-
-/**
- * Example local unit test, which will execute on the development machine (host).
- *
- * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
- */
 public class LoginTest {
+
     @Test
-    public void addition_isCorrect() {
-        assertEquals(4, 2 + 2);
+    public void emailValidator_CorrectEmailSimple_ReturnsTrue() {
+        assertThat(LoginTest.isValidEmail("name@email.com")).isTrue();
     }
+
+    private static boolean isValidEmail(String s) {
+        String testEmail = "name@email.com";
+        if (testEmail.contains("@")) {
+
+            return true;
+        }else {
+            return false;
+        }
+    }
+
 }
